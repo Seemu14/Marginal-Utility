@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marginal Utility Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 500px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    h1 { margin-bottom: 10px; }
+    .question { font-size: 18px; margin: 20px 0; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 12px;
+      background: #6c8cff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover { background: #4b6de0; }
+    .score { font-size: 20px; margin-top: 15px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🍕 Marginal Utility Game</h1>
+    <div id="quiz">
+      <div class="question" id="question"></div>
+      <div id="answers"></div>
+    </div>
+    <div id="result" class="hidden">
+      <h2>Game Over 🎉</h2>
+      <p id="finalScore"></p>
+      <button class="btn" onclick="restartGame()">Play Again</button>
+    </div>
+    <div class="score" id="score">Score: 0</div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What happens to marginal utility as more units of a good are consumed?",
+        options: [
+          "It increases indefinitely",
+          "It remains constant",
+          "It decreases (Law of Diminishing MU)",
+          "It becomes zero immediately"
+        ],
+        answer: 2
+      },
+      {
+        q: "If the first slice of pizza gives 10 utils and the second gives 7 utils, marginal utility is:",
+        options: ["Increasing","Diminishing","Constant","Negative"],
+        answer: 1
+      },
+      {
+        q: "Total utility is maximum when marginal utility is:",
+        options: ["Positive","Zero","Negative","Increasing"],
+        answer: 1
+      },
+      {
+        q: "Negative marginal utility implies:",
+        options: [
+          "Satisfaction increases",
+          "No change in satisfaction",
+          "Consumption causes dissatisfaction",
+          "Consumer equilibrium"
+        ],
+        answer: 2
+      },
+      {
+        q: "Which law explains consumer satisfaction falls with each extra unit?",
+        options: [
+          "Law of Demand",
+          "Law of Supply",
+          "Law of Diminishing Marginal Utility",
+          "Law of Returns"
+        ],
+        answer: 2
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      if (current >= questions.length) {
+        document.getElementById('quiz').classList.add('hidden');
+        document.getElementById('result').classList.remove('hidden');
+        document.getElementById('finalScore').innerText = "Your score: " + score + " / " + questions.length;
+        return;
+      }
+      const q = questions[current];
+      document.getElementById('question').innerText = q.q;
+      const ansDiv = document.getElementById('answers');
+      ansDiv.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn');
+        btn.innerText = opt;
+        btn.onclick = () => selectAnswer(i);
+        ansDiv.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(i) {
+      if (i === questions[current].answer) {
+        score++;
+      }
+      current++;
+      document.getElementById('score').innerText = "Score: " + score;
+      showQuestion();
+    }
+
+    function restartGame() {
+      current = 0;
+      score = 0;
+      document.getElementById('score').innerText = "Score: 0";
+      document.getElementById('result').classList.add('hidden');
+      document.getElementById('quiz').classList.remove('hidden');
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
